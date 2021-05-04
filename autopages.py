@@ -54,13 +54,13 @@ for i in range(1):
     price.append(soup.find("p", class_="classified__price").find("span", class_="sr-only").text)
     id_immo.append(soup.find("div", class_="classified__information--immoweb-code").text.strip())
     street.append(soup.find("span", class_="classified__information--address-row").get_text().strip())
-    locality.append(soup.find("div", {"classified__information--address"}).get_text())
+    locality.append(soup.find("div", id_="accordion_5242550c-d6f5-4e11-bc9e-a0f33f96d578").get_text())
     #locality.append(soup.find("span"[], {"classified__information--address-row"}).find_next()).get_text.strip()
-    if id_immo(-2) == id_immo(-1):
-        next_on = False
+    # if id_immo(-2) == id_immo(-1):
+    #     next_on = False
 
 driver.close()
-
+print(locality)
 print("--- %s seconds ---" % (time.time() - start_time))
 
 
