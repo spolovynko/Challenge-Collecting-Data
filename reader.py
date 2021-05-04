@@ -5,6 +5,8 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 import requests 
 from bs4 import BeautifulSoup
+from lxml import html
+
 
 import time 
 import random 
@@ -20,32 +22,35 @@ BASE_URL = "https://www.immoweb.be/en/classified/house/for-sale/ottignies/1340/9
 # btn = driver.find_elements_by_xpath('//*[@id="uc-btn-accept-banner"]')[0]
 # btn.click()
 r = requests.get(BASE_URL)
-soup = BeautifulSoup(r.content, "html")
+soup = BeautifulSoup(r.content,"html.parser")
 
 
 span = list()
+tree = (html.fromstring(r.text))
+
 for el in soup.find_all("div"):
-   span.append({
-       "Price":soup.find("p", class_="classified__price").find("span",class_="sr-only").text,
-       "Locality":"",
-       "Type":"",
-       "Subtype":"",
-       "Type of sale (Exclusion of life sales)":"",
-       "Number of rooms":"",
-       "Area":"",
-       "Fully equipped kitchen (Yes/No)":"",
-       "Furnished (Yes/No)":"",
-       "Open fire (Yes/No)":"",
-       "Terrace (Yes/No)":"",
+    span.append({
+        "Price":soup.find("p", class_="classified__price").find("span",class_="sr-only").text,
+        "Locality":"",
+        "Type":"",
+        "Subtype":"",
+        "Type of sale (Exclusion of life sales)":"",
+        "Number of rooms":"",
+        "Area":"",
+        "Fully equipped kitchen (Yes/No)":"",
+        "Furnished (Yes/No)":"",
+        "Open fire (Yes/No)":"",
+        "Terrace (Yes/No)":"",
         "If yes: Area":"",
-        "Garden (Yes/No)":"",
+        "Garden (Yes/No)":soup.find_elements_by_xpath
+        ("""//*[@id="accordion_f2c040d0-e644-4c5a-b11f-878e873abbf4"]/table/tbody/tr[8]/td"""),
         "If yes: Area":"",
         "Surface of the land":"",
         "Surface area of the plot of land":"",
         "Number of facades":"",
         "Swimming pool (Yes/No)":"",
         "State of the building (New, to be renovated, ...)":""
-   })
+    })
 
 
 print(span)
@@ -74,3 +79,4 @@ print(span)
 # #agree_btn.click()
 # scrape_quotes()
 
+#document.querySelector("#accordion_8590a2bb-d7f4-4ef4-b6c4-6b043cb2877b > table > tbody > tr:nth-child(1) > td")
