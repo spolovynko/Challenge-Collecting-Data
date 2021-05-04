@@ -7,6 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 from re import compile
 
+
 import time 
 import random 
 #driver Path
@@ -146,3 +147,5 @@ except AttributeError:
     houses["Building State"].append(None)
 
 print(houses)
+
+
