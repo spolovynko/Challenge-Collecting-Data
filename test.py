@@ -8,18 +8,19 @@ from selenium.webdriver.common.by import By
 import time
 import random
 from bs4 import BeautifulSoup
+import pandas as pd
 start_time = time.time()
-list_url =["https://www.immoweb.be/fr/recherche/maison/a-vendre?countries=BE&maxPrice=200000&orderBy=relevance",
-"https://www.immoweb.be/fr/recherche/maison/a-vendre?countries=BE&maxPrice=300000&minPrice=200001&orderBy=relevance",
-"https://www.immoweb.be/fr/recherche/maison/a-vendre?countries=BE&maxPrice=400000&minPrice=300001&orderBy=relevance",
-"https://www.immoweb.be/fr/recherche/maison/a-vendre?countries=BE&maxPrice=99800000&minPrice=400001&orderBy=relevance",
-"https://www.immoweb.be/fr/recherche/appartement/a-vendre?countries=BE&maxPrice=200000&orderBy=relevance",
-"https://www.immoweb.be/fr/recherche/appartement/a-vendre?countries=BE&maxPrice=250000&minPrice=200001&orderBy=relevance",
-"https://www.immoweb.be/fr/recherche/appartement/a-vendre?countries=BE&maxPrice=300000&minPrice=250001&orderBy=relevance",
-"https://www.immoweb.be/fr/recherche/appartement/a-vendre?countries=BE&maxPrice=400000&minPrice=300001&orderBy=relevance",
-"https://www.immoweb.be/fr/recherche/appartement/a-vendre?countries=BE&maxPrice=99000000&minPrice=400001&orderBy=relevance",]
+list_url =["https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=200000&orderBy=relevance",
+"https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=300000&minPrice=200001&orderBy=relevance",
+"https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=400000&minPrice=300001&orderBy=relevance",
+"https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=99800000&minPrice=400001&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=200000&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=250000&minPrice=200001&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=300000&minPrice=250001&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=400000&minPrice=300001&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=99000000&minPrice=400001&orderBy=relevance",]
 
-list_first_id= [9307116, 9312278, 9312222, 9302481, 9311872, 9311225, 9281516, 9313010, 9313010 ]
+list_first_id= [9171823, 9250010, 9312222, 9302481, 9315110, 9315113, 9315113, 9313527, 9315113 ]
 
 url='https://www.immoweb.be/en/search/house/for-sale?countries=BE'
 driver = webdriver.Chrome()
@@ -309,5 +310,9 @@ driver.close()
 
 print("--- %s seconds ---" % (time.time() - start_time))
 print(houses)
+
+house_to_data = pd.DataFrame(houses, columns=houses.keys())
+house_to_data.to_csv(r'\Housestest.csv')
+
 
 

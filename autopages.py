@@ -52,6 +52,12 @@ num_of_facades=[]
 swimming_pool=[]
 building_state=[]
 
+testlist = []
+results = soup.find_all("div", {"class":"accordion accordion--section"})
+for result in results:
+    testlist.append(result.text.split("\n"))
+
+
 #next_on = True
 #TODO ADD all scraping code
 try:
@@ -81,8 +87,7 @@ except AttributeError:
 try:
     LivingArea = driver.find_elements_by_xpath("""/html/body/div[1]/div[2]/div/div/main/div[3]/div[5]/div/div/div/div/div[2]/table/tbody/tr[1]/td""")
     for elem in LivingArea:
-        print(elem.text)
-    living_area.append(LivingArea.text)
+        living_area.append(elem.text)
 except AttributeError:
     living_area.append(None)
 
@@ -106,8 +111,10 @@ except AttributeError:
 #     terrace_orientation.append(None)
 
 try:
-    TerraceArea = soup.find("th", text="Terrace").find_next(class_="classified-table__data").next_element.strip()
-    terrace_area.append(TerraceArea)
+    TerraceArea = driver.find_elements_by_xpath(
+        """/html/body/div[1]/div[2]/div/div/main/div[3]/div[6]/div/div/div/div/div[2]/table/tbody/tr[5]/td""")
+    for elem in TerraceArea:
+        terrace_area.append(elem.text)
 except AttributeError:
     terrace_area.append(None)
 
@@ -131,12 +138,13 @@ try:
 except AttributeError:
     garden_orientation.append(None)
 
-# try:
-#     GardenArea = soup.find("th", text=compile("Garden surface")).find_next(
-#         class_="classified-table__data").next_element.strip()
-#     garden_area.append(GardenArea)
-# except AttributeError:
-#     garden_area.append(None)
+try:
+    GardenArea = driver.find_elements_by_xpath(
+        """/html/body/div[1]/div[2]/div/div/main/div[3]/div[7]/div/div/div/div/div[2]/table/tbody/tr[2]""")
+    for elem in GardenArea:
+        print(elem.text)
+except AttributeError:
+    garden_area.append(None)
 
 try:
     PlotSurface = soup.find("th", text="Surface of the plot").find_next(
@@ -309,5 +317,7 @@ driver.close()
 
 print("--- %s seconds ---" % (time.time() - start_time))
 print(houses)
+print(type(testlist))
 
+house_to_data = pd.DataFrame(houses, columns=houses.keys())
 
