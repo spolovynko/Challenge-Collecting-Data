@@ -21,7 +21,7 @@ list_url =["https://www.immoweb.be/fr/recherche/maison/a-vendre?countries=BE&max
 
 list_first_id= [9307116, 9312278, 9312222, 9302481, 9311872, 9311225, 9281516, 9313010, 9313010 ]
 
-url='https://www.immoweb.be/en/search/house/for-sale?countries=BE'
+url='https://www.immoweb.be/en/search/house/for-sale?countries=BE&page=1&orderBy=relevance'
 driver = webdriver.Chrome()
 driver.implicitly_wait(30)
 driver.get(url)
@@ -52,132 +52,116 @@ facades = list()
 pool = list()
 state = list()
 
-
-#next_on = True
-#TODO ADD all scraping code
-#while next_on:
-for i in range(1):
+# #next_on = True
+# #TODO ADD all scraping code
+# #while next_on:
+for i in range(10):
     python_button = driver.find_elements_by_xpath('//*[@id="classifiedNavigation"]/ul/li[2]/a')[0]
     python_button.click()
     time.sleep(random.uniform(1.0, 3.0))
     soup = BeautifulSoup(driver.page_source)
     #TODO ADD ALL SCRAPING VOCE
+    # try:
+    ImmoWebCode = soup.find(class_ ="classified__information--immoweb-code").text.strip()
+    immoweb_code.append(ImmoWebCode)
+    Price = soup.find("p", class_="classified__price").find("span",class_="sr-only").text.strip()
+    prices.append(Price)
+    Locality = soup.find("span", class_="classified__information--address-row").text.strip()
+    locality.append(Locality)
+    HouseType = soup.find(class_="classified__title").get_text().strip()
+    house_type.append(HouseType)
+
     try:
-        ImmoWebCode = soup.find(class_ ="classified__information--immoweb-code").text.strip()
-        immoweb_code.append(ImmoWebCode)
+        if soup.findAll("th",text=re.compile("Living area")):
+            for table in soup.findAll("th",text=re.compile("Living area")):
+                    area.append(table.find_next("td").next_element.strip())
+        else:
+            area.append(None)
+        
+        if soup.findAll("th",text=re.compile("Bedrooms")):
+            for table in soup.findAll("th",text=re.compile("Bedrooms")):
+                    rooms.append(table.find_next("td").next_element.strip())
+        else:
+            rooms.append(None)
+
+        if soup.findAll("th",text=re.compile("Kitchen type")):
+            for table in soup.findAll("th",text=re.compile("Kitchen type")):
+                    kitchen.append(table.find_next("td").next_element.strip())
+        else:
+            kitchen.append(None)
+            
+        if soup.findAll("th",text=re.compile("Terrace")):
+            for table in soup.findAll("th",text=re.compile("Terrace")):
+                    terrace_area.append(table.find_next("td").next_element.strip())
+        else:
+            terrace_area.append(None)
+
+        if soup.findAll("th",text=re.compile("Furnished")):
+            for table in soup.findAll("th",text=re.compile("Furnished")):
+                    furniture.append(table.find_next("td").next_element.strip())
+        else:
+            furniture.append(None)
+
+        if soup.findAll("th",text=re.compile("How many fireplaces?")):
+            for table in soup.findAll("th",text=re.compile("How many fireplaces?")):
+                    fireplace.append(table.find_next("td").next_element.strip())
+        else:
+            fireplace.append(None)
+
+        if soup.findAll("th",text=re.compile("How many fireplaces?")): 
+            for table in soup.findAll("th",text=re.compile("How many fireplaces?")):
+                    garden_orientation.append(table.find_next("td").next_element.strip())
+        else:
+            garden_orientation.append(None)
+
+        if soup.findAll("th",text=re.compile("Garden surface")):
+            for table in soup.findAll("th",text=re.compile("Garden surface")):
+                    garden_area.append(table.find_next("td").next_element.strip())
+        else:
+            garden_area.append(None)
+
+        if soup.findAll("th",text=re.compile("Surface of the plot")):
+            for table in soup.findAll("th",text=re.compile("Surface of the plot")):
+                    ground_surface.append(table.find_next("td").next_element.strip())
+        else:
+            ground_surface.append(None)
+
+        if soup.findAll("th",text=re.compile("Number of frontages")):
+            for table in soup.findAll("th",text=re.compile("Number of frontages")):
+                facades.append(table.find_next("td").next_element.strip())
+        else:
+            facades.append(None)
+
+        if soup.findAll("th",text=re.compile("Swimming pool")):
+            for table in soup.findAll("th",text=re.compile("Swimming pool")):
+                pool.append(table.find_next("td").next_element.strip())
+        else:
+            pool.append(None)
+
+        if soup.findAll("th",text=re.compile("Building condition")):
+            for table in soup.findAll("th",text=re.compile("Building condition")):
+                    state.append(table.find_next("td").next_element.strip())
+        else:
+            state.append(None)
+
     except AttributeError:
         immoweb_code.append(None)
-
-    try:
-        Price = soup.find("p", class_="classified__price").find("span",class_="sr-only").text.strip()
-        prices.append(Price)
-    except AttributeError:
-       prices.append(None)
-
-    try:
-        Locality = soup.find("span", class_="classified__information--address-row").text.strip()
-        locality.append(Locality)
-    except AttributeError:
+        prices.append(None)
         locality.append(None)
-
-    try:
-        HouseType = soup.find(class_="classified__title").get_text().strip()
-        house_type.append(HouseType)
-    except AttributeError:
         house_type.append(None)
-
-    try:
-        LivingArea = driver.find_elements_by_xpath("""/html/body/div[1]/div[2]/div/div/main/div[3]/div[5]/div/div/div/div/div[2]/table/tbody/tr[1]/td""")
-        for elem in LivingArea:
-            print(elem.text)
-        area.append(LivingArea.text)
-    except AttributeError:
         area.append(None)
-
-    try:
-        RoomsNumber = soup.find("th",text="Bedrooms").find_next(class_="classified-table__data").next_element.strip()
-        rooms.append(RoomsNumber)
-    except AttributeError:
         rooms.append(None)
-
-    try:
-        Kitchen = soup.find("th",text="Kitchen type").find_next(class_="classified-table__data").next_element.strip()
-        kitchen.append(Kitchen)
-    except AttributeError:
         kitchen.append(None)
-
-
-    try:
-        TerraceOrientation = driver.find_elements_by_xpath("""/html/body/div[1]/div[2]/div/div/main/div[3]/div[6]/div/div/div/div/div[2]/table/tbody/tr[6]/td""")
-        for el in TerraceOrientation:
-            el
-        area.append(TerraceOrientation.text)
-    except AttributeError:
-        area.append(None)
-
-    try:
-        TerraceArea = soup.find("th",text="Terrace").find_next(class_="classified-table__data").next_element.strip()
-        terrace_area.append(TerraceArea)
-    except AttributeError:
         terrace_area.append(None)
-
-    try:
-        Furnished = soup.find("th",text="Furnished").find_next(class_="classified-table__data").next_element.strip()
-        furniture.append(Furnished)
-    except AttributeError:
         furniture.append(None)
-
-    try:
-        OpenFire = soup.find("th", text="How many fireplaces?").find_next(class_="classified-table__data").next_element.strip()
-        fireplace.append(OpenFire)
-    except AttributeError:
         fireplace.append(None)
-
-    try:   
-        GardenOrientation = soup.find("th", text="Garden orientation").find_next(class_="classified-table__data").next_element.strip()
-        garden_orientation.append(GardenOrientation)
-    except AttributeError:
         garden_orientation.append(None)
-
-    try:
-        GardenArea = driver.find_elements_by_xpath("""/html/body/div[1]/div[2]/div/div/main/div[3]/div[6]/div/div/div/div/div[2]/table/tbody/tr[5]/td""")
-        for el in GardenArea:
-            el
-        garden_area.append(GardenArea.text)
-    except AttributeError:
         garden_area.append(None)
-
-    try:
-        PlotSurface = soup.find("th",text="Surface of the plot").find_next(class_="classified-table__data").next_element.strip()
-        ground_surface.append(PlotSurface)
-    except AttributeError:
         ground_surface.append(None)
-
-    try:
-        FacadeNumber = driver.find_elements_by_xpath("""/html/body/div[1]/div[2]/div/div/main/div[3]/div[4]/div/div/div/div/div[2]/table/tbody/tr[5]/td""")
-        for el in FacadeNumber:
-            el
-        facades.append(FacadeNumber.text)
-    except AttributeError:
         facades.append(None)
-
-    try:
-        SwimmingPoool = driver.find_elements_by_xpath("""/html/body/div[1]/div[2]/div/div/main/div[3]/div[7]/div/div/div/div/div[2]/table/tbody/tr[3]/td""")
-        for el in SwimmingPoool:
-            el
-        pool.append(SwimmingPoool.text)
-    except AttributeError:
         pool.append(None)
+        state.append(None)     
 
-    try:
-        StateOfTheBuilding = soup.find("th",text="Building condition").find_next(class_="classified-table__data").next_element.strip()
-        state.append(StateOfTheBuilding)
-    except AttributeError:
-        state.append(None)
-
-    #locality.append(soup.find("span"[], {"classified__information--address-row"}).find_next()).get_text.strip()
-    # if id_immo(-2) == id_immo(-1):
-    #     next_on = False
 
 driver.close()
 
@@ -188,7 +172,6 @@ houses = {"Immoweb Code":immoweb_code,
 "Area":area,
 "Rooms":rooms,
 "Kitchen":kitchen,
-"Terrace Orientation":terrace_orientation,
 "Terrace Area":terrace_area,
 "Furniture":furniture,
 "Fireplace":fireplace,
@@ -202,5 +185,6 @@ houses = {"Immoweb Code":immoweb_code,
 
 print("--- %s seconds ---" % (time.time() - start_time))
 print(houses)
+
 
 
