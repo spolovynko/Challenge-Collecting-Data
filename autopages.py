@@ -36,7 +36,8 @@ python_button = driver.find_elements_by_xpath('//*[@id="classified_9312278"]')[0
 python_button.click()
 soup = BeautifulSoup(driver.page_source)
 
-houses = {"Immoweb Code":list(),
+houses = {
+"Immoweb Code":list(),
 "Prices":list(),
 "Locality":list(),
 "House Type":list(),
