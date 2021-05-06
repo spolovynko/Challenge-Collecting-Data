@@ -10,12 +10,12 @@ import random
 from bs4 import BeautifulSoup
 
 start_time = time.time()
-list_url = ["https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=250000&minPrice=200001&orderBy=relevance",
-"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=300000&minPrice=250001&orderBy=relevance",
-"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=400000&minPrice=300001&orderBy=relevance",
-"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=99000000&minPrice=400001&orderBy=relevance",]
+list_url = ["https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=250000&minPrice=200001&page=40&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=300000&minPrice=250001&page=40&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=400000&minPrice=300001&page=40&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=99000000&minPrice=40000&page=40&orderBy=relevance",]
 
-list_first_id = [9311225, 9281516, 9313010, 9313010]
+list_first_id = [7747887, 6977056, 9083944, 9305782]
 immoweb_code = list()
 prices = list()
 locality = list()
@@ -54,10 +54,10 @@ for i in range(len(list_url)):
         newtxt = text.replace(' ', '')
         return newtxt.replace('\n', '')
 
-    next_on = True
+    #next_on = True
     # # #TODO ADD all scraping code
-    while next_on:
-    #for i in range(100):
+    #while next_on:
+    for i in range(200):
         time.sleep(random.uniform(1.0, 2.0))
         soup = BeautifulSoup(driver.page_source)
         # TODO ADD ALL SCRAPING VOCE
@@ -168,7 +168,7 @@ for i in range(len(list_url)):
             python_button = driver.find_elements_by_xpath('//*[@id="classifiedNavigation"]/ul/li[2]/a')[0]
             python_button.click()
         except IndexError:
-            next_on = False
+            continue
         compteurs = 10
         compteurs -= 1
         if compteurs < 1:
@@ -204,4 +204,4 @@ print("--- %s seconds ---" % (time.time() - start_time))
 print(houses.keys())
 print(houses)
 house_to_data = pd.DataFrame(houses)
-house_to_data.to_csv(r'./Housestest.csv')
+house_to_data.to_csv(r'./Housestest5.csv')

@@ -10,12 +10,12 @@ import random
 from bs4 import BeautifulSoup
 
 start_time = time.time()
-list_url = ["https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=250000&minPrice=200001&page=10&orderBy=relevance",
-"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=300000&minPrice=250001&page=10&orderBy=relevance",
-"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=400000&minPrice=300001&page=10&orderBy=relevance",
-"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=99000000&minPrice=40000&page=10&orderBy=relevance",]
+list_url = ["https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=250000&minPrice=200001&page=20&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=300000&minPrice=250001&page=20&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=400000&minPrice=300001&page=20&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=99000000&minPrice=40000&page=20&orderBy=relevance",]
 
-list_first_id = [9273949, 9251438, 6665614, 8993206]
+list_first_id = [8676655, 9080566, 9263470, 9187547]
 immoweb_code = list()
 prices = list()
 locality = list()
@@ -204,4 +204,4 @@ print("--- %s seconds ---" % (time.time() - start_time))
 print(houses.keys())
 print(houses)
 house_to_data = pd.DataFrame(houses)
-house_to_data.to_csv(r'./Housestest2.csv')
+house_to_data.to_csv(r'./Housestest3.csv')
