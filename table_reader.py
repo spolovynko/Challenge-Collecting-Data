@@ -5,3 +5,7 @@ def table_reader(string, ls, url, data):
                     return data[ls].append(table.find_next("td").next_element.strip())
         else:
             return data[ls].append(None)
+
+def clean(text):
+    newtxt = text.replace(' ', '')
+    return newtxt.replace('\n', '')
