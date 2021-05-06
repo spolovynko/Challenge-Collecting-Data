@@ -10,17 +10,29 @@ import random
 from bs4 import BeautifulSoup
 
 start_time = time.time()
-list_url = ["https://www.immoweb.be/fr/recherche/maison/a-vendre?countries=BE&maxPrice=200000&orderBy=relevance",
-            "https://www.immoweb.be/fr/recherche/maison/a-vendre?countries=BE&maxPrice=300000&minPrice=200001&orderBy=relevance",
-            "https://www.immoweb.be/fr/recherche/maison/a-vendre?countries=BE&maxPrice=400000&minPrice=300001&orderBy=relevance",
-            "https://www.immoweb.be/fr/recherche/maison/a-vendre?countries=BE&maxPrice=99800000&minPrice=400001&orderBy=relevance",
-            "https://www.immoweb.be/fr/recherche/appartement/a-vendre?countries=BE&maxPrice=200000&orderBy=relevance",
-            "https://www.immoweb.be/fr/recherche/appartement/a-vendre?countries=BE&maxPrice=250000&minPrice=200001&orderBy=relevance",
-            "https://www.immoweb.be/fr/recherche/appartement/a-vendre?countries=BE&maxPrice=300000&minPrice=250001&orderBy=relevance",
-            "https://www.immoweb.be/fr/recherche/appartement/a-vendre?countries=BE&maxPrice=400000&minPrice=300001&orderBy=relevance",
-            "https://www.immoweb.be/fr/recherche/appartement/a-vendre?countries=BE&maxPrice=99000000&minPrice=400001&orderBy=relevance", ]
+list_url = ["https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=250000&minPrice=200001&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=300000&minPrice=250001&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=400000&minPrice=300001&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=99000000&minPrice=400001&orderBy=relevance",]
 
-list_first_id = [9307116, 9312278, 9312222, 9302481, 9311872, 9311225, 9281516, 9313010, 9313010]
+list_first_id = [9311225, 9281516, 9313010, 9313010]
+immoweb_code = list()
+prices = list()
+locality = list()
+house_type = list()
+area = list()
+rooms = list()
+kitchen = list()
+terrace_orientation = list()
+terrace_area = list()
+furniture = list()
+fireplace = list()
+garden_orientation = list()
+garden_area = list()
+ground_surface = list()
+facades = list()
+pool = list()
+state = list()
 
 for i in range(len(list_url)):
 
@@ -37,45 +49,30 @@ for i in range(len(list_url)):
     soup = BeautifulSoup(driver.page_source)
     # TODO ADD ALL LIST
 
-    immoweb_code = list()
-    prices = list()
-    locality = list()
-    house_type = list()
-    area = list()
-    rooms = list()
-    kitchen = list()
-    terrace_orientation = list()
-    terrace_area = list()
-    furniture = list()
-    fireplace = list()
-    garden_orientation = list()
-    garden_area = list()
-    ground_surface = list()
-    facades = list()
-    pool = list()
-    state = list()
 
     def clean(text):
         newtxt = text.replace(' ', '')
         return newtxt.replace('\n', '')
 
-    # next_on = True
+    next_on = True
     # # #TODO ADD all scraping code
-    # while next_on:
-    for i in range(100):
-        time.sleep(random.uniform(1.0, 3.0))
+    while next_on:
+    #for i in range(100):
+        time.sleep(random.uniform(1.0, 2.0))
         soup = BeautifulSoup(driver.page_source)
         # TODO ADD ALL SCRAPING VOCE
-        # try:
-        ImmoWebCode = soup.find(class_="classified__information--immoweb-code").text.strip()
-        immoweb_code.append(ImmoWebCode)
-        Price = soup.find("p", class_="classified__price").find("span", class_="sr-only").text.strip()
-        prices.append(Price)
-        Locality = clean(soup.find("div", class_="classified__information--address").get_text())
-        locality.append(Locality)
-        HouseType = clean(soup.find(class_="classified__title").get_text().strip())
-        house_type.append(HouseType)
-
+        try:
+            ImmoWebCode = soup.find(class_="classified__information--immoweb-code").text.strip()
+            immoweb_code.append(ImmoWebCode)
+            Price = soup.find("p", class_="classified__price").find("span", class_="sr-only").text.strip()
+            prices.append(Price)
+            Locality = clean(soup.find("div", class_="classified__information--address").get_text())
+            locality.append(Locality)
+            HouseType = clean(soup.find(class_="classified__title").get_text().strip())
+            house_type.append(HouseType)
+        except AttributeError:
+            driver.back()
+            continue
         try:
             if soup.findAll("th", text=re.compile("Living area")):
                 for table in soup.findAll("th", text=re.compile("Living area")):
@@ -167,8 +164,11 @@ for i in range(len(list_url)):
             # facades.append(None)
             # pool.append(None)
             # state.append(None)
-        python_button = driver.find_elements_by_xpath('//*[@id="classifiedNavigation"]/ul/li[2]/a')[0]
-        python_button.click()
+        try:
+            python_button = driver.find_elements_by_xpath('//*[@id="classifiedNavigation"]/ul/li[2]/a')[0]
+            python_button.click()
+        except IndexError:
+            next_on = False
         compteurs = 10
         compteurs -= 1
         if compteurs < 1:
@@ -182,37 +182,26 @@ for i in range(len(list_url)):
 
     driver.close()
 
-    houses = {"Immoweb Code": immoweb_code,
-              "Prices": prices,
-              "Locality": locality,
-              "House Type": house_type,
-              "Area": area,
-              "Rooms": rooms,
-              "Kitchen": kitchen,
-              "Terrace Area": terrace_area,
-              "Furniture": furniture,
-              "Fireplace": fireplace,
-              "Garden Orientation": garden_orientation,
-              "Garden Area": garden_area,
-              "Ground Surface": ground_surface,
-              "Num of facades": facades,
-              "Swimming Pool": pool,
-              "Building State": state,
-              }
+houses = {"Immoweb Code": immoweb_code,
+          "Prices": prices,
+          "Locality": locality,
+          "House Type": house_type,
+          "Area": area,
+          "Rooms": rooms,
+          "Kitchen": kitchen,
+          "Terrace Area": terrace_area,
+          "Furniture": furniture,
+          "Fireplace": fireplace,
+          "Garden Orientation": garden_orientation,
+          "Garden Area": garden_area,
+          "Ground Surface": ground_surface,
+          "Num of facades": facades,
+          "Swimming Pool": pool,
+          "Building State": state,
+          }
 
 print("--- %s seconds ---" % (time.time() - start_time))
 print(houses.keys())
 print(houses)
 house_to_data = pd.DataFrame(houses)
 house_to_data.to_csv(r'./Housestest.csv')
-
-# a_file = open("sample.csv", "w")
-
-# file = open("testhouse.csv, "w+")
-# writer = csv.writer(a_file)
-# for key, value in a_dict.items():
-#     writer.writerow([key, value])
-#
-# a_file.close()
-
-
