@@ -10,12 +10,17 @@ import random
 from bs4 import BeautifulSoup
 
 start_time = time.time()
-list_url = ["https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=250000&minPrice=200001&page=40&orderBy=relevance",
-"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=300000&minPrice=250001&page=40&orderBy=relevance",
-"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=400000&minPrice=300001&page=40&orderBy=relevance",
-"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=99000000&minPrice=40000&page=40&orderBy=relevance",]
+list_url = ["https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=200000&page=100&orderBy=relevance",
+"https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=300000&minPrice=200001&page=100&orderBy=relevance",
+"https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=400000&minPrice=300001&page=100&orderBy=relevance",
+"https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=500000&minPrice=400001&page=100&orderBy=relevance",
+"https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=99000000&minPrice=500001&page=100&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=250000&minPrice=200001&page=100&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=300000&minPrice=250001&page=100&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=400000&minPrice=300001&page=100&orderBy=relevance",
+"https://www.immoweb.be/en/search/apartment/for-sale?countries=BE&maxPrice=99000000&minPrice=400000&page=100&orderBy=relevance",]
 
-list_first_id = [7747887, 6977056, 9083944, 9305782]
+list_first_id = [9185371,9267228,9319870,9197162,9248815,9252400, 9267169, 9137147, 9264043]
 immoweb_code = list()
 prices = list()
 locality = list()
@@ -44,8 +49,12 @@ for i in range(len(list_url)):
     python_button = driver.find_elements_by_xpath('//*[@id="uc-btn-accept-banner"]')[0]
     python_button.click()
     time.sleep(random.uniform(1.0, 3.0))
-    python_button = driver.find_elements_by_xpath(f'//*[@id="classified_{list_first_id[i]}"]')[0]
-    python_button.click()
+    try:
+        python_button = driver.find_elements_by_xpath(f'//*[@id="classified_{list_first_id[i]}"]')[0]
+        python_button.click()
+    except IndexError:
+        continue
+    soup = BeautifulSoup(driver.page_source)
     soup = BeautifulSoup(driver.page_source)
     # TODO ADD ALL LIST
 
@@ -57,7 +66,7 @@ for i in range(len(list_url)):
     #next_on = True
     # # #TODO ADD all scraping code
     #while next_on:
-    for i in range(200):
+    for i in range(100):
         time.sleep(random.uniform(1.0, 2.0))
         soup = BeautifulSoup(driver.page_source)
         # TODO ADD ALL SCRAPING VOCE
@@ -204,4 +213,4 @@ print("--- %s seconds ---" % (time.time() - start_time))
 print(houses.keys())
 print(houses)
 house_to_data = pd.DataFrame(houses)
-house_to_data.to_csv(r'./Housestest5.csv')
+house_to_data.to_csv(r'./Housestest11.csv')
