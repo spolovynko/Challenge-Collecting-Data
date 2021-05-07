@@ -16,13 +16,20 @@ chrome_options = Options()
 chrome_options.add_argument("--window-size=1920,1080")
 
 start_time = time.time()
-list_url =["https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=200000&page=1&orderBy=relevance",
-"https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=300000&minPrice=200000&orderBy=relevance",
-"https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=400000&minPrice=300000&orderBy=relevance",
-"https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=500000&minPrice=400000&orderBy=relevance",
-"https://www.immoweb.be/en/search/house/for-sale?countries=BE&maxPrice=600000&minPrice=500000&orderBy=relevance" ]
+list_url =["https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isAPublicSale=false&maxPrice=100000&orderBy=newest",
+"https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isAPublicSale=false&maxPrice=200000&minPrice=100001&orderBy=newest",
+"https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isAPublicSale=false&maxPrice=300000&minPrice=200000&orderBy=newest",
+"https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isAPublicSale=false&maxPrice=400000&minPrice=300000&orderBy=newest",
+"https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isAPublicSale=false&maxPrice=500000&minPrice=400000&orderBy=newest",
+"https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isAPublicSale=false&maxPrice=600000&minPrice=500000&orderBy=newest",
+"https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isAPublicSale=false&maxPrice=700000&minPrice=600000&orderBy=newest",
+"https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isAPublicSale=false&maxPrice=800000&minPrice=700000&orderBy=newest",
+"https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isAPublicSale=false&maxPrice=900000&minPrice=800000&orderBy=newest",
+"https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isAPublicSale=false&maxPrice=1000000&minPrice=900000&orderBy=newest",
+"https://www.immoweb.be/en/search/house-and-apartment/for-sale?countries=BE&isAPublicSale=false&maxPrice=1100000&minPrice=1000000&orderBy=newest",
+]
 
-list_first_id = [9171823, 9250010, 9312222, 9302481, 9312182]
+list_first_id = [9153828, 9319765, 9319762, 9319771, 9310634, 9319729, 9319725, 9319704, 9319777, 9319716, 9318949]
 
 houses = {
     "Immoweb Code":list(),
@@ -74,14 +81,13 @@ for i in range(len(list_url)):
             houses["Immoweb Code"].append(ImmoWebCode)
             Price = soup.find("p", class_="classified__price").find("span",class_="sr-only").text.strip()
             houses["Prices"].append(Price)
-            Locality = clean(soup.find("span", class_="classified__information--address-row").text.strip())
+            Locality = clean(soup.find("div", class_="classified__information--address").get_text())                        
             houses["Locality"].append(Locality)
             HouseType = clean(soup.find(class_="classified__title").get_text().strip())
             houses["House Type"].append(HouseType)
             for n in range(len(strings)):
                 table_reader(strings[n],keys[n], soup, houses)
         except AttributeError:
-            driver.back()
             continue
         try:
             python_button = driver.find_elements_by_xpath('//*[@id="classifiedNavigation"]/ul/li[2]/a')[0]
@@ -104,6 +110,6 @@ driver.close()
 print("--- %s seconds ---" % (time.time() - start_time))
 print(houses)
 house_to_data = pd.DataFrame(houses)
-house_to_data.to_csv(r'./Housestest12500.csv')
+house_to_data.to_csv(r'./HousestestXL.csv')
 
 

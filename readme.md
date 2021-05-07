@@ -1,4 +1,4 @@
-About The Project:
+## About The Project:
 
 The project was done with the aim:
 
@@ -7,19 +7,20 @@ Extract data from it
 Create a data set
 Write the data set into a csv file
 
-Team:
+## Team:
 
 Samuel Dodet
 Sergiy Polovynko
 
-Project requires:
+## Project requires:
 
-Selenium
-Beautifulsoup
-Pandas
+[Selenium](https://selenium-python.readthedocs.io/)
+[Beautifulsoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+[Pandas](https://pandas.pydata.org/)
+
 file_reader module provided with the repository
 
-How it works:
+## How it works:
 
 import selenium, beautifulsoup and pandas libraries
 selenium - to navigate dynmicaly through website pages
