@@ -15,7 +15,9 @@ Sergiy Polovynko
 ## Project requires:
 
 [Selenium](https://selenium-python.readthedocs.io/)
+
 [Beautifulsoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+
 [Pandas](https://pandas.pydata.org/)
 
 file_reader module provided with the repository
